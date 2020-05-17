@@ -1,1 +1,24 @@
 version: '3'
+services:
+
+    #Nginx Service
+    project-webserver:
+        build: ./../../.docker/build/nginx
+        image: project/nginx
+        container_name: project-webserver
+        restart: unless-stopped
+        ports:
+            - "host80"
+            - "host443"
+        volumes:
+            - ./../../src:/var/www
+            - ./../../.docker/build/nginx/conf.d/nginxConf:/etc/nginx/conf.d/nginxConf
+            - ./../../.docker/build/cert/localhost.pem:/etc/nginx/localhost.pem
+            - ./../../.docker/build/cert/localhost.key:/etc/nginx/localhost.key
+        networks:
+            - project-network
+
+#Docker Networks
+networks:
+    project-network:
+        driver: bridge
