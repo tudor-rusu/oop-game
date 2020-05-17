@@ -37,7 +37,7 @@ Also, he possesses 2 skills:
 * Rapid strike: Strike twice while it’s his turn to attack; there’s a 10% chance he’ll use this skill every time he attacks
 * Magic shield: Takes only half of the usual damage when an enemy attacks; there’s a 20% change he’ll use this skill every time he defends.
 
-**Gameplay**
+**Gameplay**  
 As **Orderus** walks the ever-green forests of **Emagia**, he encounters some wild beasts, with the following properties:
 * Health: 60 - 90
 * Strength: 60 - 90
