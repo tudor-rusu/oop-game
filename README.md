@@ -74,7 +74,7 @@ Before start install, user will need:
 * [Docker][3]
 * [Docker Compose][4]
 
-### Install local
+### Install local and run
 * Clone repository
 ```shell script
 git clone https://github.com/tudor-rusu/oop-game.git ${PROJECT_ROOT}
@@ -84,6 +84,12 @@ git clone https://github.com/tudor-rusu/oop-game.git ${PROJECT_ROOT}
 cd ${PROJECT_ROOT}
 cp .env.dist .env
 ```
+* Run the `sh` script which deploy Docker environment
+```shell script
+./run.sh
+```
+
+* Enjoy!
 
 [conventional-commits-image]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
 [conventional-commits-url]: https://conventionalcommits.org/
