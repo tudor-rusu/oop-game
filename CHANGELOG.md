@@ -1,3 +1,18 @@
+## [0.1.2] - 2020-05-24
+
+### Added
+- php Dockerfile and ini
+- separate config for php
+- env
+- example certificates
+
+### Modified
+- CHANGELOG.md
+- docker-compose
+
+### Removed
+- docker conf become .env
+
 ## [0.1.1] - 2020-04-17
 
 ### Added
