@@ -15,6 +15,21 @@ services:
             - ./../../.docker/build/nginx/conf.d/nginxConf:/etc/nginx/conf.d/nginxConf
             - ./../../.docker/build/cert/localhost.pem:/etc/nginx/localhost.pem
             - ./../../.docker/build/cert/localhost.key:/etc/nginx/localhost.key
+        depends_on:
+            - project-app
+        networks:
+            - project-network
+
+    #PHP Service
+    project-app:
+        build: ./../../.docker/build/php
+        image: project/php
+        container_name: project-app
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./../../src:/var/www
+            - ./../../.docker/build/php/local.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
             - project-network
 
