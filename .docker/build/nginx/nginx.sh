@@ -4,7 +4,7 @@ set -e
 
 # include global vars and functions repository
 source .docker/functions.sh
-source .env # get configuration file
+source src/.env # get configuration file
 projectUrl=""
 
 # build and deploy nginx
@@ -16,9 +16,9 @@ httpProtocol='http'
 nginxHttpHostPort=80
 for port in $HTTP_PORTS_LIST
 do
-  if [ $(nc -z 127.0.0.1 $port && echo "USE" || echo "FREE") == 'FREE' ]
+  if [[ $(nc -z 127.0.0.1 ${port} && echo "USE" || echo "FREE") == 'FREE' ]]
   then
-    nginxHttpHostPort=$port
+    nginxHttpHostPort=${port}
     break
   fi
 done
@@ -28,15 +28,15 @@ echo "${GRN}HTTP settings have been made successfully.${RST}"
 # HTTPS
 while true; do
   read -rp "Do you want to implement HTTPS access? ${RED}[y/N]${RST}: " yn
-  case $yn in
+  case ${yn} in
       [Yy]* )
         httpProtocol='https'
         nginxHttpsHostPort=463
         for port in $HTTPS_PORTS_LIST
         do
-          if [ $(nc -z 127.0.0.1 $port && echo "USE" || echo "FREE") == 'FREE' ]
+          if [[ $(nc -z 127.0.0.1 ${port} && echo "USE" || echo "FREE") == 'FREE' ]]
           then
-            nginxHttpsHostPort=$port
+            nginxHttpsHostPort=${port}
             break
           fi
         done
@@ -45,7 +45,8 @@ while true; do
         projectUrl="Project URL: https://$PROJECT_URL"
         echo "${BLU}Generate self-signed SSL Certificate for 365days${RST}"
         replaceAllInFile .docker/deploy/docker-compose.yml localhost $PROJECT_URL
-        openssl req -subj "/O=$PROJECT_NAME/CN=$PROJECT_URL" -addext "subjectAltName=DNS:$PROJECT_URL,DNS:www.$PROJECT_URL" -x509 -newkey rsa:4096 -nodes -keyout .docker/build/cert/$PROJECT_URL.key -out .docker/build/cert/$PROJECT_URL.pem -days 365
+        opensslSubject=$(fixupCnSubject "/O=$PROJECT_NAME/CN=$PROJECT_URL")
+        openssl req -subj ${opensslSubject} -addext "subjectAltName=DNS:$PROJECT_URL,DNS:www.$PROJECT_URL" -x509 -newkey rsa:4096 -nodes -keyout .docker/build/cert/$PROJECT_URL.key -out .docker/build/cert/$PROJECT_URL.pem -days 365
         echo "${GRN}HTTPS settings have been made successfully.${RST}"
         break;;
       [Nn]* )
@@ -53,7 +54,7 @@ while true; do
         sed -i '/localhost./d' .docker/deploy/docker-compose.yml
         replaceAllInFile .docker/deploy/docker-compose.yml nginxConf app.conf
         projectUrl="Project URL: http://$PROJECT_URL"
-        if [ $nginxHttpHostPort -ne 80 ]
+        if [[ ${nginxHttpHostPort} -ne 80 ]]
         then
             projectUrl+=":$nginxHttpHostPort"
         fi
@@ -63,7 +64,7 @@ while true; do
         sed -i '/localhost./d' .docker/deploy/docker-compose.yml
         replaceAllInFile .docker/deploy/docker-compose.yml nginxConf app.conf
         projectUrl="Project URL: http://$PROJECT_URL"
-        if [ $nginxHttpHostPort -ne 80 ]
+        if [[ ${nginxHttpHostPort} -ne 80 ]]
         then
             projectUrl+=":$nginxHttpHostPort"
         fi
@@ -72,25 +73,37 @@ while true; do
 done
 
 # etc/hosts
-if ! grep -Fxq "127.0.0.1 $PROJECT_URL" /etc/hosts
+if [[ ${localOs} == "Windows" ]]
 then
-  while true; do
-    read -rp "Do you want to add the project URL($PROJECT_URL) in etc/hosts? ${RED}[y/N]${RST}: " yn
-    case $yn in
-        [Yy]* )
-          echo ${GRN}
-          printf '\n%s\n%s' "# Project $PROJECT_NAME" "127.0.0.1 $PROJECT_URL" | sudo tee -a /etc/hosts
-          echo ${RST}
-          replaceAllInFile .docker/build/nginx/conf.d/app.conf localhost $PROJECT_URL
-          if [ ${httpProtocol} == 'https' ]
-          then
-            replaceAllInFile .docker/build/nginx/conf.d/apps.conf localhost $PROJECT_URL
-          fi
-          echo "${GRN}Project URL($PROJECT_URL) have been add successfully.${RST}"
-          break;;
-        [Nn]* ) break;;
-        * ) break;;
-    esac
-  done
+    echo "${GRN}Add these lines in c:\Windows\System32\drivers\etc\hosts${RST}${RED}"
+    printf '\n%s\n%s' "# Project $PROJECT_NAME" "127.0.0.1 $PROJECT_URL"
+    echo ${RST}
+    replaceAllInFile .docker/build/nginx/conf.d/app.conf localhost $PROJECT_URL
+    if [[ ${httpProtocol} == 'https' ]]
+    then
+        replaceAllInFile .docker/build/nginx/conf.d/apps.conf localhost $PROJECT_URL
+    fi
+else
+    if ! grep -Fxq "127.0.0.1 $PROJECT_URL" /etc/hosts
+    then
+      while true; do
+        read -rp "Do you want to add the project URL($PROJECT_URL) in etc/hosts? ${RED}[y/N]${RST}: " yn
+        case ${yn} in
+            [Yy]* )
+              echo ${GRN}
+              printf '\n%s\n%s' "# Project $PROJECT_NAME" "127.0.0.1 $PROJECT_URL" | sudo tee -a /etc/hosts
+              echo ${RST}
+              replaceAllInFile .docker/build/nginx/conf.d/app.conf localhost $PROJECT_URL
+              if [[ ${httpProtocol} == 'https' ]]
+              then
+                replaceAllInFile .docker/build/nginx/conf.d/apps.conf localhost $PROJECT_URL
+              fi
+              echo "${GRN}Project URL($PROJECT_URL) have been add successfully.${RST}"
+              break;;
+            [Nn]* ) break;;
+            * ) break;;
+        esac
+      done
+    fi
 fi
-printf '\n%s\n' "${GRN}Nginx build and deploy have been made successfully.${RST}"
+printf '%s\n' "${GRN}Nginx build and deploy have been made successfully.${RST}"
