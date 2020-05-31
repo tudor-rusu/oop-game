@@ -1,3 +1,10 @@
+## [0.1.3] - 2020-05-31
+
+### Modified
+- CHANGELOG.md
+- docker env files related to use different OS
+- move .env inside src folder
+
 ## [0.1.2] - 2020-05-24
 
 ### Added
