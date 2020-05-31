@@ -81,8 +81,7 @@ git clone https://github.com/tudor-rusu/oop-game.git ${PROJECT_ROOT}
 ```
 * Copy and adjust environmental settings in the root of the project, assumed `${PROJECT_ROOT}`:
 ```shell script
-cd ${PROJECT_ROOT}
-cp .env.dist .env
+cp ${PROJECT_ROOT}/src/.env.dist ${PROJECT_ROOT}/src/.env
 ```
 * Run the `sh` script which deploy Docker environment
 ```shell script
