@@ -1,0 +1,12 @@
+{
+  "home/index": {
+    "name": "Home",
+    "route": "/",
+    "active": false
+  },
+  "page/about": {
+    "name": "About",
+    "route": "/page/about",
+    "active": false
+  }
+}
