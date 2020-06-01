@@ -64,4 +64,15 @@ abstract class Controller extends Base
         die();
     }
 
+    /**
+     * Render a php view file
+     *
+     * @param       $viewFile
+     * @param array $params
+     */
+    public function render($viewFile, $params = [])
+    {
+        include $viewFile . '.php';
+    }
+
 }

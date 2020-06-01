@@ -15,7 +15,25 @@ class HomeController extends BaseController
      */
     public function actionIndex()
     {
-        echo 'Home Controller -> developing ...';
+        $message = 'Home -> developing ...';
+        $this->render('app/views/home/index',
+            [
+                'config'  => $this->config,
+                'menu'    => [
+                    [
+                        'active' => true,
+                        'name'   => 'Link',
+                        'route'  => 'javascript:void(0);'
+                    ],
+                    [
+                        'active' => false,
+                        'name'   => 'Link',
+                        'route'  => 'javascript:void(0);'
+                    ]
+                ],
+                'message' => $message
+            ]
+        );
     }
 
 }
