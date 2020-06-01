@@ -1,0 +1,24 @@
+{
+  "name": "tudor-rusu/oop-game",
+  "description": "Plain PHP Application using OOP concepts without any framework",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tudor Rusu",
+      "email": "tudor.rusu@hotmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "app\\": "app/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7"
+  },
+  "require": {
+    "ext-json": "*"
+  }
+}
