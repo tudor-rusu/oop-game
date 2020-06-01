@@ -1,3 +1,14 @@
+## [0.1.6] - 2020-06-01
+
+### Added
+- Routing Trait
+- Main Menu Config
+
+### Modified
+- CHANGELOG.md
+- abstractions Controller, ControllerFactory and Router
+- HomeController
+
 ## [0.1.5] - 2020-06-01
 
 ### Added
