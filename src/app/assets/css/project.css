@@ -1,0 +1,70 @@
+.container {
+	max-width: 960px;
+}
+
+/* header styles -------------------------------------- */
+.site-header {
+	background-color: rgba(0, 0, 0, .85);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+	box-shadow: 0 0.05rem 0.8rem rgba(0, 0, 0, 0.5) !important;
+}
+.site-header .navbar-collapse {
+	margin-left: 3rem;
+}
+.site-header a {
+	color: #999999 !important;
+	transition: ease-in-out color .15s;
+}
+.site-header a:hover {
+	color: #FFFFFF !important;
+	text-decoration: none;
+}
+.site-header a img {
+	height: 2.5rem !important;
+}
+.site-header a h1 {
+	float: right;
+	font-size: 1.5rem;
+	font-weight: 400;
+	margin: 0.2rem 0 0 1rem;
+}
+.site-header button.navbar-toggler:focus {
+	outline: none !important;
+}
+.site-header .navbar-nav .active > .nav-link {
+	color: #FFFFFF !important;
+}
+/* end header styles ---------------------------------- */
+
+/* footer styles -------------------------------------- */
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	margin-bottom: 3rem;
+}
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 3rem;
+	line-height: 3rem;
+	background-color: rgba(0, 0, 0, .85);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+	backdrop-filter: saturate(180%) blur(20px);
+	box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.8) !important;
+}
+.footer .container {
+	height: 2.8rem;
+}
+.footer span {
+	color: #999999;
+	transition: ease-in-out color .15s;
+}
+.footer span:hover {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/* end footer styles ---------------------------------- */
