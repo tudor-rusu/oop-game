@@ -1,5 +1,7 @@
 <?php
 
+use app\components\Application;
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 
@@ -14,5 +16,9 @@ session_start();
 
 require_once(__DIR__ . DIRECTORY_SEPARATOR . 'vendor/autoload.php');
 
-
-echo 'developing ...';
+$app = Application::getInstance($env_array);
+try {
+    $app->run();
+} catch (Exception $e) {
+    print_r($e->getMessage());
+}
