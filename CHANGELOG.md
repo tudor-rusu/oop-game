@@ -1,3 +1,12 @@
+## [0.1.5] - 2020-06-01
+
+### Added
+- views
+- assets
+
+### Modified
+- CHANGELOG.md
+
 ## [0.1.4] - 2020-06-01
 
 ### Added
