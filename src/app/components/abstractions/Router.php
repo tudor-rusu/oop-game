@@ -2,6 +2,7 @@
 
 namespace app\components\abstractions;
 
+use app\traits\RoutingTrait;
 use Exception;
 use RuntimeException;
 
@@ -10,6 +11,7 @@ use RuntimeException;
  */
 abstract class Router
 {
+    use RoutingTrait;
 
     /**
      * @var string
@@ -22,6 +24,11 @@ abstract class Router
     private $actionName;
 
     /**
+     * @var array
+     */
+    private $paramsName;
+
+    /**
      * Router constructor.
      *
      * @param $owner
@@ -30,18 +37,25 @@ abstract class Router
      */
     public function __construct($owner)
     {
-        $r = $_GET['r'];
-        if (!isset($r)) {
-            $r = $owner->getConfig('DEFAULT_ROUTE');
-        }
-        $aux = explode('/', $r);
+        $route = $_SERVER['REQUEST_URI'];
 
-        if (count($aux) !== 2) {
+        if (!isset($route) || $route === '/') {
+            $route = $owner->getConfig('DEFAULT_ROUTE');
+        }
+
+        $routeElements = self::routeElements($route);
+
+        if (count($routeElements) < 1) {
             throw new RuntimeException('Route is not well configured');
         }
 
-        $this->controllerName = $aux[0];
-        $this->actionName     = $aux[1];
+        if ($routeElements['controller'] === '') {
+            throw new RuntimeException('Route controller is not well configured');
+        }
+
+        $this->controllerName = $routeElements['controller'];
+        $this->actionName     = $routeElements['action'];
+        $this->paramsName     = count($routeElements['params']) > 0 ? $routeElements['params'] : [];
     }
 
     /**
@@ -58,6 +72,14 @@ abstract class Router
     public function getActionName()
     {
         return $this->actionName;
+    }
+
+    /**
+     * Return the name of params
+     */
+    public function getParamsName()
+    {
+        return $this->paramsName;
     }
 
 }

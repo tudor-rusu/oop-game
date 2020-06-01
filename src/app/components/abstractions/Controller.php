@@ -2,17 +2,26 @@
 
 namespace app\components\abstractions;
 
+use app\traits\RoutingTrait;
 use Exception;
+use RuntimeException;
 
 /**
  * Class class to be inherited of controllers
  */
 abstract class Controller extends Base
 {
+    use RoutingTrait;
+
     /**
      * @var array
      */
     public $config = [];
+
+    /**
+     * @var array
+     */
+    public $mainMenu = [];
 
     /**
      * Method that call the action of a controller
@@ -29,18 +38,32 @@ abstract class Controller extends Base
             $this->$realName();
             $this->afterAction($realName);
         } else {
-            throw new Exception("The action $realName does not exist!");
+            throw new RuntimeException("The action $realName does not exist!");
         }
     }
 
     /**
-     * Method to be overload if need for example filters
+     * Method to be overload if need for filters
      *
      * @param $actionName
+     *
+     * @throws Exception
      */
     protected function beforeAction($actionName)
     {
+        if (is_null(self::configExist('main_menu'))) {
+            throw new RuntimeException('Main Menu configuration does not exist on server.');
+        }
 
+        $menuKey    = strtolower(str_replace('Controller', '', substr(strrchr(get_class($this), "\\"), 1))) .
+            DIRECTORY_SEPARATOR . strtolower(str_replace('action', '', $actionName));
+        $configMenu = self::configExist('main_menu');
+
+        if (array_key_exists($menuKey, $configMenu)) {
+            $configMenu[$menuKey]['active'] = true;
+        }
+
+        $this->mainMenu = $configMenu;
     }
 
     /**
@@ -60,7 +83,7 @@ abstract class Controller extends Base
      */
     public function redirect($route)
     {
-        header("Location: index.php?r=$route");
+        header("Location: $route");
         die();
     }
 

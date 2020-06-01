@@ -19,18 +19,7 @@ class HomeController extends BaseController
         $this->render('app/views/home/index',
             [
                 'config'  => $this->config,
-                'menu'    => [
-                    [
-                        'active' => true,
-                        'name'   => 'Link',
-                        'route'  => 'javascript:void(0);'
-                    ],
-                    [
-                        'active' => false,
-                        'name'   => 'Link',
-                        'route'  => 'javascript:void(0);'
-                    ]
-                ],
+                'menu'    => $this->mainMenu,
                 'message' => $message
             ]
         );

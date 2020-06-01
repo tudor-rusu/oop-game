@@ -3,6 +3,7 @@
 namespace app\components\abstractions;
 
 use Exception;
+use RuntimeException;
 
 /**
  * Example of Simple Factory design Pattern
@@ -21,12 +22,22 @@ class ControllerFactory
      */
     public static function create($controllerName)
     {
-        $fileName  = ucfirst($controllerName) . 'Controller.php';
+        $fileName = ucfirst($controllerName) . 'Controller.php';
+        if (!$fileName) {
+            throw new RuntimeException("Controller $controllerName not founded!");
+        }
+
         $className = "app\controllers\\" . ucfirst($controllerName) . 'Controller';
-        $filePath  = './app/controllers/' . $fileName;
+
+        $filePath = './app/controllers/' . $fileName;
+
+        if (!file_exists($filePath)) {
+            throw new RuntimeException("Controller $fileName does not exist.");
+        }
+
         require_once($filePath);
         if (!class_exists($className)) {
-            throw new Exception("Class $className not founded!");
+            throw new RuntimeException("Class $className not founded!");
         }
         return new $className();
     }
