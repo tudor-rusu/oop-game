@@ -54,6 +54,12 @@ then
   printf '%s\n' "${GRN}Self-signed SSL Certificate have been register successfully in your system.${RST}"
 fi
 
+echo -en "\n"
+echo "${BLU}Run in $PROJECT_NAME-app container composer install, update and dump-autoload${RESET}"
+docker container exec -it $PROJECT_NAME-app composer install
+docker container exec -it $PROJECT_NAME-app composer update
+docker container exec -it $PROJECT_NAME-app composer dump-autoload
+
 # show the final result
 listString=("$projectUrl")
 drawResult "${listString}"
