@@ -1,3 +1,14 @@
+## [0.1.8] - 2020-06-02
+
+### Added
+- Static Page Controller
+- static page About view
+- assets images
+
+### Modified
+- CHANGELOG.md
+- project.css
+
 ## [0.1.7] - 2020-06-02
 
 ### Added
