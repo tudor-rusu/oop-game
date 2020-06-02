@@ -1,6 +1,9 @@
 .container {
 	max-width: 960px;
 }
+main {
+	padding-top: 5rem;
+}
 
 /* header styles -------------------------------------- */
 .site-header {
