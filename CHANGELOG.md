@@ -1,3 +1,13 @@
+## [0.1.7] - 2020-06-02
+
+### Added
+- Phpunit tests
+
+### Modified
+- CHANGELOG.md
+- project.css
+- run.sh
+
 ## [0.1.6] - 2020-06-01
 
 ### Added
