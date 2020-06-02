@@ -2,7 +2,13 @@
 	max-width: 960px;
 }
 main {
-	padding-top: 5rem;
+	padding: 5rem 0;
+}
+.display-3 {
+	padding: 4rem 0;
+}
+#about-page-wrapper {
+	background: url('/app/assets/img/hero.svg') -60px -110px no-repeat;
 }
 
 /* header styles -------------------------------------- */
