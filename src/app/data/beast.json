@@ -1,0 +1,10 @@
+{
+  "attributes": {
+    "health": [60, 90],
+    "strength": [60, 90],
+    "defence": [40, 60],
+    "speed": [40, 60],
+    "luck": [25, 40]
+  },
+  "skills": {}
+}
