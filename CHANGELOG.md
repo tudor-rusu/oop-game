@@ -1,3 +1,15 @@
+## [0.1.9] - 2020-06-04
+
+### Added
+- interfaces
+- data connection
+- json data
+
+### Modified
+- CHANGELOG.md
+- models structure
+- Orderus model
+
 ## [0.1.8] - 2020-06-02
 
 ### Added
