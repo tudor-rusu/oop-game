@@ -1,0 +1,13 @@
+{
+  "attributes": {
+    "health": [70, 100],
+    "strength": [70, 80],
+    "defence": [45, 55],
+    "speed": [40, 50],
+    "luck": [10, 30]
+  },
+  "skills": {
+    "rapid strike": 10,
+    "magic shield": 20
+  }
+}

@@ -2,23 +2,19 @@
 
 namespace app\components\abstractions;
 
-use \app\components\ModelError;
+use app\components\abstractions\interfaces\ModelInterface;
+use app\components\ModelError;
 
 /**
  * Abstract class that defines a model representation
  */
-abstract class Model extends Base
+abstract class Model extends Base implements ModelInterface
 {
 
     /**
      * @var array
      */
     public $errors = [];
-
-    /**
-     * Validate the model
-     */
-    abstract public function validate();
 
     /**
      * Add errors to the model
@@ -48,4 +44,19 @@ abstract class Model extends Base
         return $this->errors;
     }
 
+    /**
+     * Check if the model has data
+     *
+     * @return boolean
+     */
+    public function hasData()
+    {
+        return count($this->data) > 0;
+    }
+
+    public function getMyName($className)
+    {
+        $tmpArr = explode('\\', $className);
+        return strtolower(array_pop($tmpArr));
+    }
 }
