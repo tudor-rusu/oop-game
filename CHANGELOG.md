@@ -1,3 +1,16 @@
+## [0.1.9.1] - 2020-06-05
+
+### Added
+- FlashMessages class
+
+### Modified
+- CHANGELOG.md
+- views main layout
+- project js
+- main Cntroller class
+- HomeController class - index method
+- JsonConnection
+
 ## [0.1.9] - 2020-06-04
 
 ### Added
