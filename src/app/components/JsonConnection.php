@@ -60,18 +60,17 @@ class JsonConnection implements ConnectionInterface
      */
     public function connect(array $params = [])
     {
-
-        if (count($params) < 1) {
-            throw new RuntimeException('Connection Params array must have parameters');
-        }
-        if (!isset($params['host'])) {
-            throw new RuntimeException('Connection Host must be passed');
-        }
-        if (!is_readable($params['host'])) {
-            throw new RuntimeException('Connection Host is not readable or does not exist in the server');
-        }
-
         try {
+            if (count($params) < 1) {
+                throw new RuntimeException('Connection Params array must have parameters');
+            }
+            if (!isset($params['host'])) {
+                throw new RuntimeException('Connection Host must be passed');
+            }
+            if (!is_readable($params['host'])) {
+                throw new RuntimeException('Connection Host is not readable or does not exist in the server');
+            }
+
             $this->connection = fopen($params['host'], $params['command']);
             if (!$this->connection) {
                 throw new RuntimeException('Connection is not valid');

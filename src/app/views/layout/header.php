@@ -46,3 +46,15 @@
 
 		<!-- Begin page content -->
 		<main role="main" class="container">
+        <?php if ($params['messages']) : ?>
+        <?php foreach ($params['messages'] as $type => $messageSet) : ?>
+            <?php foreach ($messageSet as $message) : ?>
+			<div class="alert alert-<?=$type?> alert-dismissible fade show" role="alert">
+                <?=$message['message']?>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+        <?php endif; ?>

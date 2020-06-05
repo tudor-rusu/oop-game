@@ -2,6 +2,7 @@
 
 namespace app\components\abstractions;
 
+use app\components\FlashMessages;
 use app\traits\RoutingTrait;
 use Exception;
 use RuntimeException;
@@ -22,6 +23,19 @@ abstract class Controller extends Base
      * @var array
      */
     public $mainMenu = [];
+
+    /**
+     * @var object
+     */
+    public $flashMessages;
+
+    /**
+     * Controller constructor.
+     */
+    public function __construct()
+    {
+        $this->flashMessages = new FlashMessages();
+    }
 
     /**
      * Method that call the action of a controller

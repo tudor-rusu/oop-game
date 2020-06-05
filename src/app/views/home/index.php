@@ -1,7 +1,9 @@
 <?php $this->render('app/views/layout/header', $params); ?>
 
-<?php
-echo $params['message'];
-?>
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			content
+		</div>
+	</div>
 
 <?php $this->render('app/views/layout/footer', $params['config']); ?>
