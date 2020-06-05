@@ -1,4 +1,19 @@
 {
+  "name": [
+    "Griffin",
+    "Manticore",
+    "Basilisk",
+    "Blemmyae",
+    "Roc",
+    "Centaur",
+    "Echidna",
+    "Golem",
+    "Hydra",
+    "Leshy",
+    "Ogre",
+    "Troll",
+    "Wyvern"
+  ],
   "attributes": {
     "health": [60, 90],
     "strength": [60, 90],

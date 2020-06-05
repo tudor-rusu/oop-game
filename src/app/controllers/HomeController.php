@@ -27,6 +27,43 @@ class HomeController extends BaseController
             }
         }
 
+        $beastModel = ModelFactory::create('beast');
+        if ($beastModel->hasErrors()) {
+            foreach ($beastModel->errors as $error) {
+                $this->flashMessages->addMessage($error->attribute . ': ' . $error->message, FlashMessages::ERROR);
+            }
+        }
+
+        $hero = [];
+        $beast = [];
+        if (!$this->flashMessages->hasMessages(FlashMessages::ERROR)) {
+            $heroModel::initAttributes($heroModel);
+            $hero = [
+                'name' => ucfirst($heroModel->data['name']),
+                'attributes' => $heroModel->data['attributes'],
+                'skills' => $heroModel->data['skills'],
+                'first_strike' => false
+            ];
+            $beastModel::initAttributes($beastModel);
+            $beast = [
+                'name' => ucfirst($beastModel->data['name']),
+                'attributes' => $beastModel->data['attributes'],
+                'first_strike' => false
+            ];
+
+            if ($hero['attributes']['speed'] === $beast['attributes']['speed']) {
+                if ($hero['attributes']['luck'] > $beast['attributes']['luck']) {
+                    $hero['first_strike'] = true;
+                } else {
+                    $beast['first_strike'] = true;
+                }
+            } else if ($hero['attributes']['speed'] > $beast['attributes']['speed']) {
+                $hero['first_strike'] = true;
+            } else {
+                $beast['first_strike'] = true;
+            }
+        }
+
         $messages = $this->flashMessages->hasMessages();
         $this->flashMessages->clear();
 
@@ -34,7 +71,9 @@ class HomeController extends BaseController
             [
                 'config'   => $this->config,
                 'menu'     => $this->mainMenu,
-                'messages' => $messages
+                'messages' => $messages,
+                'hero'     => $hero,
+                'beast'    => $beast
             ]
         );
     }
