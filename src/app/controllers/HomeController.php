@@ -75,6 +75,7 @@ class HomeController extends BaseController
                 'config'   => $this->config,
                 'menu'     => $this->mainMenu,
                 'messages' => $messages,
+                'round'    => 0,
                 'hero'     => $hero,
                 'beast'    => $beast
             ]
@@ -83,15 +84,15 @@ class HomeController extends BaseController
 
     /**
      * Action for the fight analise
-     * POST AJAX Request
+     * accept only POST AJAX Request
      */
     public function actionAnalise()
     {
         if (!self::isAjaxRequest($_SERVER, $_SESSION['token'])) {
             $this->redirect('/page/403');
         }
-        sleep(5);
-        echo $_POST['test'];
+        sleep(2);
+        echo json_encode($_POST, JSON_PRETTY_PRINT);
     }
 
 }

@@ -10,6 +10,12 @@ main {
 #about-page-wrapper {
 	background: url('/app/assets/img/hero.svg') -60px -110px no-repeat;
 }
+#players-stats > div.col-md-5 {
+	border-width: 0.2rem !important;
+}
+.progress {
+	height: 2rem !important;
+}
 
 /* header styles -------------------------------------- */
 .site-header {
