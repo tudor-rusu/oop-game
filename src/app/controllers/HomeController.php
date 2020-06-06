@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\abstractions\Controller as BaseController;
 use app\components\abstractions\ModelFactory;
 use app\components\FlashMessages;
+use app\traits\RoutingTrait;
 use Exception;
 
 /**
@@ -12,6 +13,7 @@ use Exception;
  */
 class HomeController extends BaseController
 {
+    use RoutingTrait;
 
     /**
      * Main action for the application
@@ -34,20 +36,20 @@ class HomeController extends BaseController
             }
         }
 
-        $hero = [];
+        $hero  = [];
         $beast = [];
         if (!$this->flashMessages->hasMessages(FlashMessages::ERROR)) {
             $heroModel::initAttributes($heroModel);
             $hero = [
-                'name' => ucfirst($heroModel->data['name']),
-                'attributes' => $heroModel->data['attributes'],
-                'skills' => $heroModel->data['skills'],
+                'name'         => ucfirst($heroModel->data['name']),
+                'attributes'   => $heroModel->data['attributes'],
+                'skills'       => $heroModel->data['skills'],
                 'first_strike' => false
             ];
             $beastModel::initAttributes($beastModel);
             $beast = [
-                'name' => ucfirst($beastModel->data['name']),
-                'attributes' => $beastModel->data['attributes'],
+                'name'         => ucfirst($beastModel->data['name']),
+                'attributes'   => $beastModel->data['attributes'],
                 'first_strike' => false
             ];
 
@@ -69,6 +71,7 @@ class HomeController extends BaseController
 
         $this->render('app/views/home/index',
             [
+                'token'    => self::generateCsrfToken(),
                 'config'   => $this->config,
                 'menu'     => $this->mainMenu,
                 'messages' => $messages,
@@ -76,6 +79,19 @@ class HomeController extends BaseController
                 'beast'    => $beast
             ]
         );
+    }
+
+    /**
+     * Action for the fight analise
+     * POST AJAX Request
+     */
+    public function actionAnalise()
+    {
+        if (!self::isAjaxRequest($_SERVER, $_SESSION['token'])) {
+            $this->redirect('/page/403');
+        }
+        sleep(5);
+        echo $_POST['test'];
     }
 
 }

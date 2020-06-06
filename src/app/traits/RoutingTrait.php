@@ -47,4 +47,35 @@ trait RoutingTrait
         return null;
     }
 
+    /**
+     * Return a CSRF token
+     *
+     * @return false|string|null
+     */
+    public static function generateCsrfToken()
+    {
+        $_SESSION['token'] = microtime();
+        $options           = [
+            'salt' => '$2y$11$' . substr(md5(uniqid(mt_rand(), true)), 0, 22),
+            'cost' => 10
+        ];
+
+        return password_hash($_SESSION['token'], PASSWORD_BCRYPT, $options);
+    }
+
+    /**
+     * Check if request is AJAX
+     *
+     * @param $serverRequest
+     * @param $token
+     *
+     * @return bool
+     */
+    public static function isAjaxRequest($serverRequest, $token)
+    {
+        return !empty($serverRequest['HTTP_X_REQUESTED_WITH'])
+            && strtolower($serverRequest['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+            && crypt($token, $serverRequest['HTTP_X_CSRF_TOKEN']) === $serverRequest['HTTP_X_CSRF_TOKEN'];
+    }
+
 }
