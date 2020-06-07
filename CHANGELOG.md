@@ -1,3 +1,21 @@
+## [0.2.0] - 2020-06-07
+
+### Added
+- AJAX implementation
+- http error code views
+- minimal layout
+- DataManipulation trait
+
+### Modified
+- CHANGELOG.md
+- views main layout
+- project js and css
+- main Model class
+- Orderus and Beast models
+- HomeController class
+- PageController class
+- Routing Trait
+
 ## [0.1.9.1] - 2020-06-05
 
 ### Added
