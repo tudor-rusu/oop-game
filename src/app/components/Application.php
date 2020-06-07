@@ -7,6 +7,7 @@ use app\components\abstractions\Controller as BaseController;
 use app\components\abstractions\ControllerFactory;
 use app\components\abstractions\Router as BaseRouter;
 use Exception;
+use RuntimeException;
 
 /**
  * Here is the backbone of application. On this class every request and response comes.
@@ -83,6 +84,14 @@ class Application extends BaseApplication
         $this->setRouter($router);
 
         $controller = ControllerFactory::create($router->getControllerName());
+        if (!is_object($controller)) {
+            if ($this->_config['PROJECT_DEBUG']) {
+                throw new RuntimeException($controller);
+            }
+
+            $pageController = ControllerFactory::create('page');
+            $pageController->redirect('/page/404');
+        }
         $this->setController($controller);
         $this->controller->config = $this->_config;
     }

@@ -51,8 +51,10 @@ abstract class Controller extends Base
             $this->beforeAction($realName);
             $this->$realName();
             $this->afterAction($realName);
-        } else {
+        } else if ($this->config['PROJECT_DEBUG']) {
             throw new RuntimeException("The action $realName does not exist!");
+        } else {
+            $this->redirect('/page/404');
         }
     }
 

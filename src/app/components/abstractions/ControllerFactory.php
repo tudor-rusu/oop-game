@@ -22,24 +22,28 @@ class ControllerFactory
      */
     public static function create($controllerName)
     {
-        $fileName = ucfirst($controllerName) . 'Controller.php';
-        if (!$fileName) {
-            throw new RuntimeException("Controller $controllerName not founded!");
+        try {
+            $fileName = ucfirst($controllerName) . 'Controller.php';
+            if (!$fileName) {
+                throw new RuntimeException("Controller $controllerName not founded!");
+            }
+
+            $className = "app\controllers\\" . ucfirst($controllerName) . 'Controller';
+
+            $filePath = './app/controllers/' . $fileName;
+
+            if (!file_exists($filePath)) {
+                throw new RuntimeException("Controller $fileName does not exist.");
+            }
+
+            require_once($filePath);
+            if (!class_exists($className)) {
+                throw new RuntimeException("Class $className not founded!");
+            }
+            return new $className();
+        } catch (Exception $exception) {
+            return $exception->getMessage();
         }
-
-        $className = "app\controllers\\" . ucfirst($controllerName) . 'Controller';
-
-        $filePath = './app/controllers/' . $fileName;
-
-        if (!file_exists($filePath)) {
-            throw new RuntimeException("Controller $fileName does not exist.");
-        }
-
-        require_once($filePath);
-        if (!class_exists($className)) {
-            throw new RuntimeException("Class $className not founded!");
-        }
-        return new $className();
     }
 
 }
