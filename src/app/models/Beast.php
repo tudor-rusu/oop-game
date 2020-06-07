@@ -7,7 +7,7 @@ use app\components\abstractions\ModelFactory;
 use app\traits\DataManipulationTrait;
 use Exception;
 
-class Orderus extends ModelBase
+class Beast extends ModelBase
 {
     use DataManipulationTrait;
 
@@ -17,7 +17,7 @@ class Orderus extends ModelBase
     public $myName;
 
     /**
-     * Orderus constructor.
+     * Wild Beast constructor.
      */
     public function __construct()
     {
@@ -26,24 +26,14 @@ class Orderus extends ModelBase
     }
 
     /**
-     * Create Orderus model
+     * Create Beast model
      *
      * @return mixed
      * @throws Exception
      */
     public static function create()
     {
-        return ModelFactory::create('Orderus');
-    }
-
-    /**
-     * Return Orderus skills
-     *
-     * @return mixed
-     */
-    public function getSkills()
-    {
-        return $this->data['skills'];
+        return ModelFactory::create('Beast');
     }
 
     /**

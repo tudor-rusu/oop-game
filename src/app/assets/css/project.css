@@ -10,6 +10,58 @@ main {
 #about-page-wrapper {
 	background: url('/app/assets/img/hero.svg') -60px -110px no-repeat;
 }
+#players-stats > div.col-md-5 {
+	border-width: 0.3rem !important;
+	border-radius: 1rem;
+}
+.progress {
+	height: 2rem !important;
+}
+#battle-statistics {
+	display: none;
+	margin-top: 1rem;
+}
+#battle-statistics thead th {
+	border-top: none !important;
+}
+.player-luck {
+	display: none;
+	position: absolute;
+	top: 1rem;
+}
+.player-luck#hero-luck {
+	right: 1rem;
+}
+.player-dead {
+	display: none;
+	position: absolute;
+	left: 0;
+	background: rgba(0, 0, 0, 0.2);
+	width: 100%;
+	height: 100%;
+}
+.player-dead h1 {
+	font-size: 7rem;
+	margin-top: 35%;
+}
+#fight,
+#new-battle {
+	position: relative;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	min-width: 0;
+	word-wrap: break-word;
+}
+#new-battle {
+	display: none;
+}
+.spinner-border {
+	position: absolute;
+	left: 0.8rem;
+	top: 1rem;
+}
 
 /* header styles -------------------------------------- */
 .site-header {

@@ -5,13 +5,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="<?= $params['config']['PROJECT_DESCRIPTION'] ?>">
 		<meta name="author" content="<?= $params['config']['PROJECT_AUTHOR'] ?>">
+		<!-- CSRF Token -->
+		<meta name="csrf-token" content="<?= $params['token'] ?>">
 
 		<link rel="icon" href="/app/assets/img/favicon.ico">
 		<link rel="apple-touch-icon" sizes="180x180" href="/app/assets/img/apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="/app/assets/img/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/app/assets/img/favicon-16x16.png">
 
-		<title><?= ucwords($params['config']['PROJECT_NAME']) ?></title>
+		<title><?= ucwords($params['config']['PROJECT_NAME']) ?><?= ($params['title']) ? ' - ' . ucwords($params['title']) : '' ?></title>
 
 		<!-- Bootstrap core CSS -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"

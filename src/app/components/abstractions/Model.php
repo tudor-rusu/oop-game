@@ -54,6 +54,13 @@ abstract class Model extends Base implements ModelInterface
         return count($this->data) > 0;
     }
 
+    /**
+     * Get model name by class name
+     *
+     * @param $className
+     *
+     * @return string
+     */
     public function getMyName($className)
     {
         $tmpArr = explode('\\', $className);
