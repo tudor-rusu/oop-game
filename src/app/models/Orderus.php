@@ -37,6 +37,16 @@ class Orderus extends ModelBase
     }
 
     /**
+     * Return Orderus skills
+     *
+     * @return mixed
+     */
+    public function getSkills()
+    {
+        return $this->data['skills'];
+    }
+
+    /**
      * @inheritDoc
      */
     public function validate()

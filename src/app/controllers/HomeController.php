@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\abstractions\Controller as BaseController;
 use app\components\abstractions\ModelFactory;
 use app\components\FlashMessages;
+use app\traits\DataManipulationTrait;
 use app\traits\RoutingTrait;
 use Exception;
 
@@ -13,7 +14,18 @@ use Exception;
  */
 class HomeController extends BaseController
 {
-    use RoutingTrait;
+    use RoutingTrait,
+        DataManipulationTrait;
+
+    /**
+     * @var array
+     */
+    private $hero;
+
+    /**
+     * @var array
+     */
+    private $beast;
 
     /**
      * Main action for the application
@@ -43,7 +55,6 @@ class HomeController extends BaseController
             $hero = [
                 'name'         => ucfirst($heroModel->data['name']),
                 'attributes'   => $heroModel->data['attributes'],
-                'skills'       => $heroModel->data['skills'],
                 'first_strike' => false
             ];
             $beastModel::initAttributes($beastModel);
@@ -71,13 +82,14 @@ class HomeController extends BaseController
 
         $this->render('app/views/home/index',
             [
-                'token'    => self::generateCsrfToken(),
-                'config'   => $this->config,
-                'menu'     => $this->mainMenu,
-                'messages' => $messages,
-                'round'    => 0,
-                'hero'     => $hero,
-                'beast'    => $beast
+                'token'     => self::generateCsrfToken(),
+                'config'    => $this->config,
+                'menu'      => $this->mainMenu,
+                'messages'  => $messages,
+                'turn'      => 1,
+                'max-turns' => $this->config['MAX_TURNS'],
+                'hero'      => $hero,
+                'beast'     => $beast
             ]
         );
     }
@@ -85,14 +97,95 @@ class HomeController extends BaseController
     /**
      * Action for the fight analise
      * accept only POST AJAX Request
+     *
+     * @throws Exception
      */
     public function actionAnalise()
     {
         if (!self::isAjaxRequest($_SERVER, $_SESSION['token'])) {
             $this->redirect('/page/403');
         }
-        sleep(2);
-        echo json_encode($_POST, JSON_PRETTY_PRINT);
+
+        $resultsData = [];
+        $turn        = (int)$_POST['turn'];
+        $maxTurns    = (int)$this->config['MAX_TURNS'];
+        $this->hero  = $_POST['hero'];
+        $this->beast = $_POST['beast'];
+
+        $resultsData['post'] = $_POST;
+        $resultsData['turn'] = $turn;
+
+        $resultsData = ($this->hero['action'] === '1') ?
+            array_merge($resultsData, $this->turnResults('hero', 'beast')) :
+            array_merge($resultsData, $this->turnResults('beast', 'hero'));
+
+        if ($turn === $maxTurns) {
+            $resultsData['winner']          = $resultsData['hero']['health'] > $resultsData['beast']['health'] ?
+                'hero' : 'beast';
+            $resultsData['stats']['winner'] = $this->{$resultsData['winner']}['name'];
+        }
+
+        echo json_encode($resultsData);
+    }
+
+    /**
+     * Calculate turn results
+     *
+     * @param $attacker
+     * @param $defender
+     *
+     * @return array
+     * @throws Exception
+     */
+    private function turnResults($attacker, $defender)
+    {
+        $resultsData  = [];
+        $attackerData = $this->{$attacker};
+        $defenderData = $this->{$defender};
+
+        $heroModel  = ModelFactory::create('orderus');
+        $heroSkills = $heroModel->getSkills();
+
+        $resultsData['stats']['attacker']   = $attackerData['name'];
+        $resultsData['stats']['winner']     = 'not yet';
+        $resultsData['stats']['hero_skill'] = 'no';
+        $resultsData[$attacker]['action']   = 0;
+        $resultsData[$attacker]['health']   = $attackerData['health'];
+        $resultsData[$defender]['action']   = 1;
+
+        $damage = $attackerData['strength'] - $defenderData['defence'];
+        if ($attacker === 'hero' && self::probabilityByPercent($heroSkills['rapid_strike'])) {
+            $resultsData['stats']['hero_skill'] = 'Rapid strike';
+            $damage                             *= 2;
+        }
+        if ($defender === 'hero' && self::probabilityByPercent($heroSkills['magic_shield'])) {
+            $resultsData['stats']['hero_skill'] = 'Magic shield';
+            $damage                             = ceil($damage / 2);
+        }
+
+        if (!self::probabilityByPercent($defenderData['luck'])) {
+            $resultsData[$defender]['luck']        = 0;
+            $resultsData['stats']['defender_luck'] = 'no';
+            if ($defenderData['health'] <= $damage) {
+                $resultsData['winner']                   = $attacker;
+                $resultsData[$defender]['health']        = 0;
+                $resultsData['stats']['defender_health'] = 0;
+                $resultsData['stats']['winner']          = $attackerData['name'];
+                $resultsData['stats']['damage']          = $damage;
+            } else {
+                $resultsData[$defender]['health']        = $defenderData['health'] - $damage;
+                $resultsData['stats']['damage']          = $damage;
+                $resultsData['stats']['defender_health'] = $resultsData[$defender]['health'];
+            }
+        } else {
+            $resultsData[$defender]['luck']          = 1;
+            $resultsData['stats']['defender_luck']   = 'yes';
+            $resultsData['stats']['damage']          = 0;
+            $resultsData[$defender]['health']        = $defenderData['health'];
+            $resultsData['stats']['defender_health'] = $defenderData['health'];
+        }
+
+        return $resultsData;
     }
 
 }

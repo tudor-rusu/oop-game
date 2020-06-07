@@ -2,7 +2,7 @@
 
 		<footer class="footer">
 			<div class="container text-center">
-				<span class="small">Developed by <?=$params['PROJECT_AUTHOR']?></span>
+				<span class="small">Developed by <a href="<?=$params['PROJECT_GITHUB']?>" target="_blank" alt=""><?=$params['PROJECT_AUTHOR']?></a></span>
 			</div>
 		</footer>
 
