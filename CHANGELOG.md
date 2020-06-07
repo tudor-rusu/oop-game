@@ -1,3 +1,11 @@
+## [0.2.1] - 2020-06-07
+
+### Modified
+- CHANGELOG.md
+- Application component
+- Controller abstraction
+- ControllerFactory abstraction
+
 ## [0.2.0] - 2020-06-07
 
 ### Added
